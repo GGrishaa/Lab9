@@ -1,88 +1,58 @@
 #include <iostream>
 using namespace std;
 
-enum state{
-    ravn,
-    neravn,
-    bolshe,
-    menshe,
-    bolsheravn,
-    mensheravn
-};
-
 template <typename T>
-int counter(T* arr, int len, T cond, state a = ravn){
+int counter(T* arr, int len, T condd, bool (*f)(T a, T b)){
     int c = 0;
-    if (a == 0){
-        for(int i = 0; i < len; i++){
-            if(arr[i] == cond){
-                c++;
-            }
-        }
-    }
-    else if (a == 1){
-        for(int i = 0; i < len; i++){
-            if(arr[i] != cond){
-                c++;
-            }
-        }
-    }
-    else if (a == 2){
-        for(int i = 0; i < len; i++){
-            if(arr[i] > cond){
-                c++;
-            }
-        }
-    }
-    else if (a == 3){
-        for(int i = 0; i < len; i++){
-            if(arr[i] < cond){
-                c++;
-            }
-        }
-    }
-    else if (a == 4){
-        for(int i = 0; i < len; i++){
-            if(arr[i] >= cond){
-                c++;
-            }
-        }
-    }
-    else if (a == 5){
-        for(int i = 0; i < len; i++){
-            if(arr[i] <= cond){
-                c++;
-            }
+    for(int i = 0; i < len; i++){
+        if (f(arr[i], condd)){
+            c++;
         }
     }
     return c;
 }
 
+template <typename T>
+bool bolshe(T a, T b){
+    return (a > b);
+}
 
+template <typename T>
+bool menshe(T a, T b){
+    return (a < b);
+}
+
+template <typename T>
+bool ravn(T a, T b){
+    return (a == b);
+}
+
+template <typename T>
+bool neravn(T a, T b){
+    return (a != b);
+}
+
+template <typename T>
+bool bolsheravn(T a, T b){
+    return (a >= b);
+}
+
+template <typename T>
+bool mensheravn(T a, T b){
+    return (a <= b);
+}
 
 int main(){
-    double* arr1;
-    arr1 = new double[10];
-    arr1[0] = 3.2;
-    arr1[1] = 0.99;
-    arr1[2] = -13.103;
-    arr1[3] = 109.7;
-    arr1[4] = 18.05;
-    arr1[5] = 2222.11;
-    arr1[6] = 143.0;
-    arr1[7] = -89123.3;
-    arr1[8] = -9.0;
-    arr1[9] = 0.0;
-    double c1 = 0.1;
-    cout << "В первом массиве " << counter(arr1, 10, c1, state::bolshe) << " элемента(ов) больше " << c1 << endl;
-    delete[] arr1;
+    char arr1[8] = {'U', 'l', 'y', 'a', 't', 'o', 'p'};
+    char c1 = 'y';
 
-    int arr2[5] = {-105, 6005, 0, 27, 89212};
-    int c2 = 11;
-    cout << "Во втором массиве " << counter(arr2, 5, c2, state::menshe) << " элемента(ов) меньше " << c2 << endl;
+    int arr2[10] = {309840321, 54552, 8124, 10, -162, 88, 131, -26, 52, -1147};
+    int c2 = 17;
 
-    char arr3[8] = {'u', 'l', 'y', 'a', 't', 'o', 'p'};
-    char c3 = 'f';
-    cout << "В третьем массиве " << counter(arr3, 8, c3) << " элемента(ов) равных " << c3 << endl;
+    double arr3[7] = {1.7, 89.25, -165.9, 781.123, 0.56, -22045.444, 10101.0101};
+    double c3 = -0.1;
+    cout << counter(arr1, 8, c1, ravn) << endl;
+    cout << counter(arr2, 10, c2, bolshe) << endl;
+    cout << counter(arr3, 7, c3, menshe) << endl;
     return 0;
 }
